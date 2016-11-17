@@ -13,5 +13,5 @@ var userHash = {};
 // 2.イベントの定義
 io.sockets.on("connection", function (socket)
 {
-    log('connected');
+	log('connect');
 });
