@@ -1,4 +1,4 @@
-var socket = io.connect('http://imagirelab.com/websocket_prot/');
+var socket = io.connect('http://localhost:3000');
 
 enchant();
 
