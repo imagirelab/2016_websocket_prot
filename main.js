@@ -1,3 +1,5 @@
+var socket = io.connect('http://localhost:8888');
+
 enchant();
 
 window.onload = function ()
