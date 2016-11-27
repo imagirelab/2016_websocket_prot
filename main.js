@@ -1,5 +1,10 @@
 var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
 
+socket.on("connect", function () {
+    var id = socket.io.engine.id;
+    console.log("Connected ID: " + id);
+});
+
 enchant();
 
 window.onload = function ()
