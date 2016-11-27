@@ -1,29 +1,14 @@
 var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
 
-var id = "";
-
-socket.on("connect", function ()
-{
-    id = socket.socket.sessionid;
-});
-
 enchant();
 
 window.onload = function ()
 {
     var core = new Core(640, 360);
 
-    var Type = {
-        PUPU: 'PUPU',
-        POPO: 'POPO',
-        PIPI: 'PIPI',
-    };
+    var Type;
 
-    var Direction = {
-        Top: 'TOP',
-        Middle: 'MIDDLE',
-        Buttom: 'BUTTOM',
-    };
+    var Direction;
 
     //事前にロードを行う
     core.preload('img/back5.png');
@@ -78,26 +63,23 @@ window.onload = function ()
         //ボタンが押された時の処理
         pupuBtn.on('touchstart', function ()
         {
-            Type = Type.PUPU;
-            Direction = Direction.Middle;
-            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id })
-            log("Pushed");
+            Type = 'PUPU';
+            Direction = 'Middle';
+            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
         });
 
         popoBtn.on('touchstart', function ()
         {
-            Type = Type.POPO;
-            Direction = Direction.Middle;
-            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id })
-            log("Pushed");
+            Type = 'POPO';
+            Direction = 'Middle';
+            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
         });
 
         pipiBtn.on('touchstart', function ()
         {
-            Type = Type.PIPI;
-            Direction = Direction.Middle;
-            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id })
-            log("Pushed");
+            Type = 'PIPI';
+            Direction = 'Middle';
+            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
         });
 
         ////クマを座標に動かしたい時は本体からの座標を受け取って移動するようにする。
