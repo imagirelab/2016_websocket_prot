@@ -15,6 +15,9 @@ window.onload = function ()
     core.preload('img/pupu.png');
     core.preload('img/pipi.png');
     core.preload('img/popo.png');
+    core.preload('img/pupu2.png');
+    core.preload('img/pipi2.png');
+    core.preload('img/popo2.png');
     //fpsの設定
     core.fps = 15;
 
@@ -63,29 +66,52 @@ window.onload = function ()
         //ボタンが押された時の処理
         pupuBtn.on('touchstart', function ()
         {
-            Type = 'PUPU';
-            Direction = 'Middle';
-            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
+            pupuBtn.image = core.assets['img/pupu2.png'];
         });
 
         popoBtn.on('touchstart', function ()
         {
-            Type = 'POPO';
-            Direction = 'Middle';
-            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
+            popoBtn.image = core.assets['img/popo2.png'];
         });
 
         pipiBtn.on('touchstart', function ()
         {
-            Type = 'PIPI';
-            Direction = 'Middle';
-            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
+            pipiBtn.image = core.assets['img/pipi2.png'];
         });
 
-        ////クマを座標に動かしたい時は本体からの座標を受け取って移動するようにする。
-        //core.rootScene.on('touchstart', function(pos)
-        //{
-        //});
+        //ボタンが離された時の処理
+        pupuBtn.on('touchend', function () {
+            pupuBtn.image = core.assets['img/pupu.png'];
+            Type = "PUPU";
+            Direction = "Middle";
+            id = 1;
+            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
+            console.log(Type);
+            console.log(Direction);
+            console.log(id);
+        });
+
+        popoBtn.on('touchend', function () {
+            popoBtn.image = core.assets['img/popo.png'];
+            Type = "POPO";
+            Direction = "Middle";
+            id = 1;
+            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
+            console.log(Type);
+            console.log(Direction);
+            console.log(id);
+        });
+
+        pipiBtn.on('touchend', function () {
+            pipiBtn.image = core.assets['img/pipi.png'];
+            Type = "PIPI";
+            Direction = "Middle";
+            id = 1;
+            socket.emit("DemonPush", { Type: Type, Direction: Direction, Level: 1, PlayerID: id });
+            console.log(Type);
+            console.log(Direction);
+            console.log(id);
+        });
 
         //オブジェクトに追加する処理(ここに入れたいオブジェクトを描画順に指定)
         core.rootScene.addChild(back);  //一番背景
