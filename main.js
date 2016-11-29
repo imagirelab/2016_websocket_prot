@@ -1,4 +1,5 @@
-var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
+//var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
+var socket = io.connect('http://localhost:5555');
 
 socket.on("connect", function () {
     var id = socket.io.engine.id;
