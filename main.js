@@ -36,6 +36,7 @@ window.onload = function ()
     //タイマー
     var Timer;
 
+
 		socket.on("PushPlayerID", function(Data)
 		{
 			PUPU.PlayerID = Data.PlayerID;
