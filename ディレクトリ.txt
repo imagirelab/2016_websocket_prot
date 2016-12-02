@@ -1,0 +1,15 @@
+クライアント側
+index.html
+main.js
+enchant.js
+画像ファイル一式を追加予定
+
+サーバー側
+現在ローカルのC:\User\堀田裕太郎\TinyPhone_Serverに管理中
+app.js
+LICENSE.txt
+package.json
+params.json
+README.md
+node_modules
+stylesheets
