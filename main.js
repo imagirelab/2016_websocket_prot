@@ -1,9 +1,10 @@
-var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
-//var socket = io.connect('http://localhost:5555');
+//var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
+var socket = io.connect('http://localhost:5555');
 
 socket.on("connect", function () {
     var id = socket.io.engine.id;
     console.log("Connected ID: " + id);
+    socket.emit("EnterRobby");
 });
 
 enchant();
@@ -34,6 +35,13 @@ window.onload = function ()
     var Flag;
     //タイマー
     var Timer;
+
+		socket.on("PushPlayerID", function(Data)
+		{
+			PUPU.PlayerID = Data.PlayerID;
+			POPO.PlayerID = Data.PlayerID;
+			PIPI.PlayerID = Data.PlayerID;
+		});
 
     //事前にロードを行う
     //背景
@@ -210,7 +218,7 @@ window.onload = function ()
                 Flag = FlagCheck(haveCost, PUPU, Flag);
                 haveCost = CostCheck(haveCost, PUPU);
                 if (Flag == "Succes")
-                    PushDemon(PUPU, pupuBtn, tapPos, endPos, 1);
+                    PushDemon(PUPU, pupuBtn, tapPos, endPos, PUPU.PlayerID);
             }
             //ポポボタンの場所で押してた場合
             else if(tapObj == "popoBtn")
@@ -218,7 +226,7 @@ window.onload = function ()
                 Flag = FlagCheck(haveCost, POPO, Flag);
                 haveCost = CostCheck(haveCost, POPO);
                 if (Flag == "Succes")
-                    PushDemon(POPO, popoBtn, tapPos, endPos, 1);
+                    PushDemon(POPO, popoBtn, tapPos, endPos, POPO.PlayerID);
             }
             //ピピボタンの場所で押してた場合
             else if(tapObj == "pipiBtn")
@@ -226,7 +234,7 @@ window.onload = function ()
                 Flag = FlagCheck(haveCost, PIPI, Flag);
                 haveCost = CostCheck(haveCost, PIPI);
                 if (Flag == "Succes")
-                    PushDemon(PIPI, pipiBtn, tapPos, endPos, 1);
+                    PushDemon(PIPI, pipiBtn, tapPos, endPos, PIPI.PlayerID);
             }
 
             tapObj = null;
