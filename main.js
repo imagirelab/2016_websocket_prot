@@ -1,10 +1,15 @@
-var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
-//var socket = io.connect('ws://localhost:5555');
+//var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
+var socket = io.connect('ws://192.168.11.250:5555');
+
+var PlayerID = 0;
 
 socket.on("connect", function () {
     var id = socket.io.engine.id;
     console.log("Connected ID: " + id);
+    socket.emit("EnterRobby");
 });
+
+
 
 enchant();
 
@@ -70,6 +75,12 @@ window.onload = function ()
 
     core.onload = function ()
     {
+        //プレイヤーIDのセット
+        socket.on("PushPlayerID", function (idData) {
+            PlayerID = idData.PlayerID;
+            console.log("Connect PlayerID: " + PlayerID);
+        });
+
         //フレームリセット
         core.frame = 0;
 
@@ -102,9 +113,6 @@ window.onload = function ()
         deadlyBtn.scale(1.5, 1.5);
         deadlyBtn.x = 200;
         deadlyBtn.y = 750;
-
-        var btn = new Button("", deadlyBtn);
-        btn.moveTo(100, 100);
 
         //背景
         var back = new Sprite(3200, 1800);
@@ -220,8 +228,9 @@ window.onload = function ()
             tapObj = "pipiBtn";
         });
 
-        deadlyBtn.on('touchstart', function () {
-            if (deadlyFlag != true) {
+        deadlyBtn.on('touchstart', function ()
+        {
+            if (!deadlyFlag) {
                 deadlyBtn.image = core.assets['img/deadly2.png'];
                 tapObj = "deadlyBtn";
             }
@@ -250,14 +259,12 @@ window.onload = function ()
 
         deadlyBtn.on('touchend', function ()
         {
-            if (deadlyFlag == true)
+            if(!deadlyFlag)
             {
                 deadlyBtn.image = core.assets['img/deadly3.png'];
+                PushDeadly(PlayerID);
+                deadlyFlag = true;
             }
-            else
-            {
-                deadlyBtn.image = core.assets['img/deadly.png'];
-            }           
         });
 
         //タップした場所を使った処理はここから
@@ -266,10 +273,27 @@ window.onload = function ()
             //ププボタンの場所で押してた場合
             if(tapObj == "pupuBtn")
             {
-                Flag = FlagCheck(haveCost, PUPU, Flag);
-                haveCost = CostCheck(haveCost, PUPU);
-                if (Flag == "Succes")
-                    PushDemon(PUPU, pupuBtn, tapPos, endPos, 1);
+                if ((tapPos.y - endPos.y) > pupuBtn.height / 2 * pupuBtn.scaleY) {
+                    Flag = FlagCheck(haveCost, PUPU, Flag);
+                    haveCost = CostCheck(haveCost, PUPU);
+                    if (Flag == "Succes")
+                        PushDemon(PUPU, pupuBtn, tapPos, endPos, PlayerID);
+                }
+                else if ((tapPos.y - endPos.y) < -pupuBtn.height / 2 * pupuBtn.scaleY) {
+                    Flag = FlagCheck(haveCost, PUPU, Flag);
+                    haveCost = CostCheck(haveCost, PUPU);
+                    if (Flag == "Succes")
+                        PushDemon(PUPU, pupuBtn, tapPos, endPos, PlayerID);
+                }
+                else if ((tapPos.x - endPos.x) < -pupuBtn.height / 2 * pupuBtn.scaleX || (tapPos.x - endPos.x) > pupuBtn.height / 2 * pupuBtn.scaleX) {
+                    Flag = FlagCheck(haveCost, PUPU, Flag);
+                    haveCost = CostCheck(haveCost, PUPU);
+                    if (Flag == "Succes")
+                        PushDemon(PUPU, pupuBtn, tapPos, endPos, PlayerID);
+                }
+                else {
+                    
+                }
             }
             //ポポボタンの場所で押してた場合
             else if(tapObj == "popoBtn")
@@ -277,15 +301,54 @@ window.onload = function ()
                 Flag = FlagCheck(haveCost, POPO, Flag);
                 haveCost = CostCheck(haveCost, POPO);
                 if (Flag == "Succes")
-                    PushDemon(POPO, popoBtn, tapPos, endPos, 1);
+                    PushDemon(POPO, popoBtn, tapPos, endPos, PlayerID);
+
+                if ((tapPos.y - endPos.y) > popoBtnBtn.height / 2 * popoBtnBtn.scaleY) {
+                    Flag = FlagCheck(haveCost, POPO, Flag);
+                    haveCost = CostCheck(haveCost, POPO);
+                    if (Flag == "Succes")
+                        PushDemon(POPO, popoBtnBtn, tapPos, endPos, PlayerID);
+                }
+                else if ((tapPos.y - endPos.y) < -popoBtnBtn.height / 2 * popoBtnBtn.scaleY) {
+                    Flag = FlagCheck(haveCost, POPO, Flag);
+                    haveCost = CostCheck(haveCost, POPO);
+                    if (Flag == "Succes")
+                        PushDemon(POPO, popoBtnBtn, tapPos, endPos, PlayerID);
+                }
+                else if ((tapPos.x - endPos.x) < -popoBtnBtn.height / 2 * popoBtnBtn.scaleX || (tapPos.x - endPos.x) > popoBtnBtn.height / 2 * popoBtnBtn.scaleX) {
+                    Flag = FlagCheck(haveCost, POPO, Flag);
+                    haveCost = CostCheck(haveCost, POPO);
+                    if (Flag == "Succes")
+                        PushDemon(POPO, popoBtnBtn, tapPos, endPos, PlayerID);
+                }
+                else {
+
+                }
             }
             //ピピボタンの場所で押してた場合
             else if(tapObj == "pipiBtn")
             {
-                Flag = FlagCheck(haveCost, PIPI, Flag);
-                haveCost = CostCheck(haveCost, PIPI);
-                if (Flag == "Succes")
-                    PushDemon(PIPI, pipiBtn, tapPos, endPos, 1);
+                if ((tapPos.y - endPos.y) > pipiBtn.height / 2 * pipiBtn.scaleY) {
+                    Flag = FlagCheck(haveCost, PIPI, Flag);
+                    haveCost = CostCheck(haveCost, PIPI);
+                    if (Flag == "Succes")
+                        PushDemon(PIPI, pipiBtn, tapPos, endPos, PlayerID);
+                }
+                else if ((tapPos.y - endPos.y) < -pipiBtn.height / 2 * pipiBtn.scaleY) {
+                    Flag = FlagCheck(haveCost, PIPI, Flag);
+                    haveCost = CostCheck(haveCost, PIPI);
+                    if (Flag == "Succes")
+                        PushDemon(PIPI, pipiBtn, tapPos, endPos, PlayerID);
+                }
+                else if ((tapPos.x - endPos.x) < -pipiBtn.height / 2 * pipiBtn.scaleX || (tapPos.x - endPos.x) > pipiBtn.height / 2 * pipiBtn.scaleX) {
+                    Flag = FlagCheck(haveCost, PIPI, Flag);
+                    haveCost = CostCheck(haveCost, PIPI);
+                    if (Flag == "Succes")
+                        PushDemon(PIPI, pipiBtn, tapPos, endPos, PlayerID);
+                }
+                else {
+
+                }
             }
 
             tapObj = null;
@@ -299,7 +362,6 @@ window.onload = function ()
         core.rootScene.addChild(popoBtn);
         core.rootScene.addChild(pipiBtn);
         core.rootScene.addChild(deadlyBtn);
-        core.rootScene.addChild(btn);
 
         core.rootScene.addChild(ponpuCable);
         core.rootScene.addChild(ponpu);
@@ -510,12 +572,21 @@ function PushDemon(demon, btn, startPos, endPos, setPlayerID)
     }
     //プレイヤーID設定
     demon.PlayerID = setPlayerID;
+
     //データ送信
     if (demon.Direction != "None")
         socket.emit("DemonPush", { Type: demon.Type, Direction: demon.Direction, Level: demon.Level, PlayerID: demon.PlayerID });
+
     //ログ出力
     console.log(demon.Type);
     console.log(demon.Direction);
     console.log(demon.Level);
     console.log(demon.PlayerID);
+}
+
+//必殺技送信
+function PushDeadly(setPlayerID)
+{
+    socket.emit("DeadlyPush", { Deadly: "Fire", PlayerID: setPlayerID});
+    console.log("DeadlyPushed");
 }
