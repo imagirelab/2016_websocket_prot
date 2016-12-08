@@ -303,23 +303,23 @@ window.onload = function ()
                 if (Flag == "Succes")
                     PushDemon(POPO, popoBtn, tapPos, endPos, PlayerID);
 
-                if ((tapPos.y - endPos.y) > popoBtnBtn.height / 2 * popoBtnBtn.scaleY) {
+                if ((tapPos.y - endPos.y) > popoBtn.height / 2 * popoBtn.scaleY) {
                     Flag = FlagCheck(haveCost, POPO, Flag);
                     haveCost = CostCheck(haveCost, POPO);
                     if (Flag == "Succes")
-                        PushDemon(POPO, popoBtnBtn, tapPos, endPos, PlayerID);
+                        PushDemon(POPO, popoBtn, tapPos, endPos, PlayerID);
                 }
-                else if ((tapPos.y - endPos.y) < -popoBtnBtn.height / 2 * popoBtnBtn.scaleY) {
+                else if ((tapPos.y - endPos.y) < -popoBtn.height / 2 * popoBtn.scaleY) {
                     Flag = FlagCheck(haveCost, POPO, Flag);
                     haveCost = CostCheck(haveCost, POPO);
                     if (Flag == "Succes")
-                        PushDemon(POPO, popoBtnBtn, tapPos, endPos, PlayerID);
+                        PushDemon(POPO, popoBtn, tapPos, endPos, PlayerID);
                 }
-                else if ((tapPos.x - endPos.x) < -popoBtnBtn.height / 2 * popoBtnBtn.scaleX || (tapPos.x - endPos.x) > popoBtnBtn.height / 2 * popoBtnBtn.scaleX) {
+                else if ((tapPos.x - endPos.x) < -popoBtn.height / 2 * popoBtn.scaleX || (tapPos.x - endPos.x) > popoBtn.height / 2 * popoBtn.scaleX) {
                     Flag = FlagCheck(haveCost, POPO, Flag);
                     haveCost = CostCheck(haveCost, POPO);
                     if (Flag == "Succes")
-                        PushDemon(POPO, popoBtnBtn, tapPos, endPos, PlayerID);
+                        PushDemon(POPO, popoBtn, tapPos, endPos, PlayerID);
                 }
                 else {
 
