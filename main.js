@@ -17,36 +17,36 @@ window.onload = function ()
 {
     var core = new Core(3200, 1800);
 
-    //ˆ«–‚                Type    Dir  Level ID   COST HP   ATK  SPEED    
+    //æ‚ªé­”                Type    Dir  Level ID   COST HP   ATK  SPEED    
     var PUPU = new Demon("PUPU", "None", 0, null, 100, 200, 500, 6);
     var POPO = new Demon("POPO", "None", 0, null, 100, 200, 500, 6);
     var PIPI = new Demon("PIPI", "None", 0, null, 100, 200, 500, 6);
 
-    //©•ª‚Ì‰ŠúŠƒRƒXƒg
+    //è‡ªåˆ†ã®åˆæœŸæ‰€æŒã‚³ã‚¹ãƒˆ
     var haveCost = 500;
 
-    //Å‘åŠƒRƒXƒg
+    //æœ€å¤§æ‰€æŒã‚³ã‚¹ãƒˆ
     var MaxCost = 3000;
 
-    //–ˆ•bæ“¾‚Å‚«‚éƒRƒXƒg
+    //æ¯ç§’å–å¾—ã§ãã‚‹ã‚³ã‚¹ãƒˆ
     var fpsCost = 25;
 
-    //ƒ^ƒbƒ`‚µn‚ß‚ÌêŠ‚ğŠm”F
+    //ã‚¿ãƒƒãƒã—å§‹ã‚ã®å ´æ‰€ã‚’ç¢ºèª
     var tapPos = new TapPos();
-    //‚È‚É‚ğƒ^ƒbƒv‚µ‚½‚©‚ÌŠm”F
+    //ãªã«ã‚’ã‚¿ãƒƒãƒ—ã—ãŸã‹ã®ç¢ºèª
     var tapObj;
-    //ƒRƒXƒg‚ª•¥‚¦‚é‚©‚Ìƒtƒ‰ƒO
+    //ã‚³ã‚¹ãƒˆãŒæ‰•ãˆã‚‹ã‹ã®ãƒ•ãƒ©ã‚°
     var Flag;
-    //ƒ^ƒCƒ}[
+    //ã‚¿ã‚¤ãƒãƒ¼
     var Timer;
-    //•KE‹Z‚ğŒ‚‚Á‚½‚©‚Ìƒtƒ‰ƒO
+    //å¿…æ®ºæŠ€ã‚’æ’ƒã£ãŸã‹ã®ãƒ•ãƒ©ã‚°
     var deadlyFlag;
 
-    //–‘O‚Éƒ[ƒh‚ğs‚¤
-    //”wŒi
+    //äº‹å‰ã«ãƒ­ãƒ¼ãƒ‰ã‚’è¡Œã†
+    //èƒŒæ™¯
     core.preload('img/back5.png');
 
-    //ƒ{ƒ^ƒ“
+    //ãƒœã‚¿ãƒ³
     core.preload('img/pupu.png');
     core.preload('img/pipi.png');
     core.preload('img/popo.png');
@@ -60,7 +60,7 @@ window.onload = function ()
     core.preload('img/deadly2.png');
     core.preload('img/deadly3.png');
 
-    //UIEƒtƒHƒ“ƒg
+    //UIãƒ»ãƒ•ã‚©ãƒ³ãƒˆ
     core.preload('img/CP.png');
     core.preload('img/rednumber_siro.png');
     core.preload('img/huki_blue.png');
@@ -70,116 +70,116 @@ window.onload = function ()
     core.preload('img/ponpu3.png');
     core.preload('img/ponpu3.5.png');
 
-    //fps‚Ìİ’è
+    //fpsã®è¨­å®š
     core.fps = 30;
 
     core.onload = function ()
     {
-        //ƒvƒŒƒCƒ„[ID‚ÌƒZƒbƒg
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼IDã®ã‚»ãƒƒãƒˆ
         socket.on("PushPlayerID", function (idData) {
             PlayerID = idData.PlayerID;
             console.log("Connect PlayerID: " + PlayerID);
         });
 
-        //ƒtƒŒ[ƒ€ƒŠƒZƒbƒg
+        //ãƒ•ãƒ¬ãƒ¼ãƒ ãƒªã‚»ãƒƒãƒˆ
         core.frame = 0;
 
-        ////////‰æ‘œî•ñˆ—////////
+        ////////ç”»åƒæƒ…å ±å‡¦ç†////////
 
-        //ƒvƒv‚Ìƒ{ƒ^ƒ“
+        //ãƒ—ãƒ—ã®ãƒœã‚¿ãƒ³
         var pupuBtn = new Sprite(1200, 1200);
         pupuBtn.image = core.assets['img/pupu.png'];
         pupuBtn.scale(0.25, 0.25);
         pupuBtn.x = 2200;
         pupuBtn.y = -300;
 
-        //ƒ|ƒ|‚Ìƒ{ƒ^ƒ“
+        //ãƒãƒã®ãƒœã‚¿ãƒ³
         var popoBtn = new Sprite(1200, 1200);
         popoBtn.image = core.assets['img/popo.png'];
         popoBtn.scale(0.25, 0.25);
         popoBtn.x = 2200;
         popoBtn.y = 300;
 
-        //ƒsƒs‚Ìƒ{ƒ^ƒ“
+        //ãƒ”ãƒ”ã®ãƒœã‚¿ãƒ³
         var pipiBtn = new Sprite(1200, 1200);
         pipiBtn.image = core.assets['img/pipi.png'];
         pipiBtn.scale(0.25, 0.25);
         pipiBtn.x = 2200;
         pipiBtn.y = 900;
 
-        //•KE‹Z‚Ìƒ{ƒ^ƒ“
+        //å¿…æ®ºæŠ€ã®ãƒœã‚¿ãƒ³
         var deadlyBtn = new Sprite(300, 300);
         deadlyBtn.image = core.assets['img/deadly.png'];
         deadlyBtn.scale(1.5, 1.5);
         deadlyBtn.x = 200;
         deadlyBtn.y = 750;
 
-        //”wŒi
+        //èƒŒæ™¯
         var back = new Sprite(3200, 1800);
         back.image = core.assets['img/back5.png'];
         back.x = 0;
         back.y = 0;
 
         //UI
-        //ƒvƒv‚ÌUI”wŒi
+        //ãƒ—ãƒ—ã®UIèƒŒæ™¯
         var PUPU_UI = new Sprite(600, 600);
         PUPU_UI.image = core.assets['img/huki_red.png'];
         PUPU_UI.scale(1.2, 1.2);
         PUPU_UI.x = 1900;
         PUPU_UI.y = 0;
 
-        //ƒ|ƒ|‚ÌUI”wŒi
+        //ãƒãƒã®UIèƒŒæ™¯
         var POPO_UI = new Sprite(600, 600);
         POPO_UI.image = core.assets['img/huki_green.png'];
         POPO_UI.scale(1.2, 1.2);
         POPO_UI.x = 1900;
         POPO_UI.y = 600;
 
-        //ƒsƒs‚ÌUI”wŒi
+        //ãƒ”ãƒ”ã®UIèƒŒæ™¯
         var PIPI_UI = new Sprite(600, 600);
         PIPI_UI.image = core.assets['img/huki_blue.png'];
         PIPI_UI.scale(1.2, 1.2);
         PIPI_UI.x = 1900;
         PIPI_UI.y = 1200;
 
-        //ƒ|ƒ“ƒvƒP[ƒuƒ‹
+        //ãƒãƒ³ãƒ—ã‚±ãƒ¼ãƒ–ãƒ«
         var ponpuCable = new Sprite(600, 600);
         ponpuCable.image = core.assets['img/ponpu1.png'];
         ponpuCable.scale(3, 3);
         ponpuCable.x = 1000;
         ponpuCable.y = 600;
 
-        //ƒ|ƒ“ƒv–{‘Ì
+        //ãƒãƒ³ãƒ—æœ¬ä½“
         var ponpu = new Sprite(600, 600);
         ponpu.image = core.assets['img/ponpu3.png'];
         ponpu.scale(3, 3);
         ponpu.x = 1000;
         ponpu.y = 600;
 
-        //ƒ|ƒ“ƒv‚Ìã‚©‚ç‚©‚Ô‚¹‚éƒKƒ‰ƒXƒP[ƒX
+        //ãƒãƒ³ãƒ—ã®ä¸Šã‹ã‚‰ã‹ã¶ã›ã‚‹ã‚¬ãƒ©ã‚¹ã‚±ãƒ¼ã‚¹
         var ponpuCover = new Sprite(600, 600);
         ponpuCover.image = core.assets['img/ponpu3.5.png'];
         ponpuCover.scale(3, 3);
         ponpuCover.x = 1000;
         ponpuCover.y = 600;
 
-        //–îˆó
+        //çŸ¢å°
         var Arrow = new Sprite(600, 600);
         Arrow.image = core.assets['img/ya_blue.png'];
         Arrow.scale(0.5, 0.5);
         Arrow.x = 5000;
         Arrow.y = -5000;
 
-        //CP‚ÌƒtƒHƒ“ƒg
+        //CPã®ãƒ•ã‚©ãƒ³ãƒˆ
         var CPFont = new Sprite(150, 150);
         CPFont.image = core.assets['img/CP.png'];
         CPFont.scale(1, 1);
         CPFont.x = 1300;
         CPFont.y = 1600;
 
-        //ƒRƒXƒg‚ÌƒtƒHƒ“ƒg
+        //ã‚³ã‚¹ãƒˆã®ãƒ•ã‚©ãƒ³ãƒˆ
         var CostFont = new Array();
-        var costDigit = 4;  //Œ…”(‰Šúİ’è4Œ…)
+        var costDigit = 4;  //æ¡æ•°(åˆæœŸè¨­å®š4æ¡)
         for (var i = 0; i < costDigit; i++)
         {
             CostFont[i] = new Sprite(120, 120);
@@ -190,8 +190,8 @@ window.onload = function ()
             CostFont[i].frame = 0;
         }
 
-        ////////ƒƒCƒ“ˆ—////////
-        //ƒtƒŒ[ƒ€‚²‚Æ‚Éˆ—‚·‚é
+        ////////ãƒ¡ã‚¤ãƒ³å‡¦ç†////////
+        //ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã«å‡¦ç†ã™ã‚‹
         core.addEventListener('enterframe', function ()
         {
             if (core.frame % core.fps == 0)
@@ -202,14 +202,14 @@ window.onload = function ()
                     haveCost = MaxCost;
             }
 
-            //CPƒtƒHƒ“ƒg
+            //CPãƒ•ã‚©ãƒ³ãƒˆ
             for (var i = costDigit; i >= 0; i--)
             {
                 FontSet(haveCost, i, CostFont[i]);
             }
         });
 
-        //ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Ìˆ—
+        //ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸæ™‚ã®å‡¦ç†
         pupuBtn.on('touchstart', function ()
         {
             pupuBtn.image = core.assets['img/pupu2.png'];
@@ -236,14 +236,14 @@ window.onload = function ()
             }
         });
 
-        //ƒ^ƒbƒv‚µ‚½êŠ‚ÌÀ•Wæ“¾
+        //ã‚¿ãƒƒãƒ—ã—ãŸå ´æ‰€ã®åº§æ¨™å–å¾—
         core.rootScene.on('touchstart', function (startPos)
         {
             tapPos.x = startPos.x;
             tapPos.y = startPos.y;
         });
 
-        //—£‚³‚ê‚½‚Ìˆ—
+        //é›¢ã•ã‚ŒãŸæ™‚ã®å‡¦ç†
         pupuBtn.on('touchend', function () {
             pupuBtn.image = core.assets['img/pupu.png'];
         });
@@ -267,10 +267,10 @@ window.onload = function ()
             }
         });
 
-        //ƒ^ƒbƒv‚µ‚½êŠ‚ğg‚Á‚½ˆ—‚Í‚±‚±‚©‚ç
+        //ã‚¿ãƒƒãƒ—ã—ãŸå ´æ‰€ã‚’ä½¿ã£ãŸå‡¦ç†ã¯ã“ã“ã‹ã‚‰
         core.rootScene.on('touchend', function (endPos)
         {
-            //ƒvƒvƒ{ƒ^ƒ“‚ÌêŠ‚Å‰Ÿ‚µ‚Ä‚½ê‡
+            //ãƒ—ãƒ—ãƒœã‚¿ãƒ³ã®å ´æ‰€ã§æŠ¼ã—ã¦ãŸå ´åˆ
             if(tapObj == "pupuBtn")
             {
                 if ((tapPos.y - endPos.y) > pupuBtn.height / 2 * pupuBtn.scaleY) {
@@ -295,7 +295,7 @@ window.onload = function ()
                     
                 }
             }
-            //ƒ|ƒ|ƒ{ƒ^ƒ“‚ÌêŠ‚Å‰Ÿ‚µ‚Ä‚½ê‡
+            //ãƒãƒãƒœã‚¿ãƒ³ã®å ´æ‰€ã§æŠ¼ã—ã¦ãŸå ´åˆ
             else if(tapObj == "popoBtn")
             {
                 Flag = FlagCheck(haveCost, POPO, Flag);
@@ -325,7 +325,7 @@ window.onload = function ()
 
                 }
             }
-            //ƒsƒsƒ{ƒ^ƒ“‚ÌêŠ‚Å‰Ÿ‚µ‚Ä‚½ê‡
+            //ãƒ”ãƒ”ãƒœã‚¿ãƒ³ã®å ´æ‰€ã§æŠ¼ã—ã¦ãŸå ´åˆ
             else if(tapObj == "pipiBtn")
             {
                 if ((tapPos.y - endPos.y) > pipiBtn.height / 2 * pipiBtn.scaleY) {
@@ -354,9 +354,9 @@ window.onload = function ()
             tapObj = null;
         });
 
-        ////////•`‰æ////////
-        //ƒIƒuƒWƒFƒNƒg‚É’Ç‰Á‚·‚éˆ—(‚±‚±‚É“ü‚ê‚½‚¢ƒIƒuƒWƒFƒNƒg‚ğ•`‰æ‡‚Éw’è)
-        core.rootScene.addChild(back);  //ˆê”Ô”wŒi
+        ////////æç”»////////
+        //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¿½åŠ ã™ã‚‹å‡¦ç†(ã“ã“ã«å…¥ã‚ŒãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æç”»é †ã«æŒ‡å®š)
+        core.rootScene.addChild(back);  //ä¸€ç•ªèƒŒæ™¯
 
         core.rootScene.addChild(pupuBtn);
         core.rootScene.addChild(popoBtn);
@@ -373,22 +373,22 @@ window.onload = function ()
 
         core.rootScene.addChild(CPFont);
         for (var i = 0; i < costDigit; i++) {
-            core.rootScene.addChild(CostFont[i]);  //ˆê”Ô‘O–Ê
+            core.rootScene.addChild(CostFont[i]);  //ä¸€ç•ªå‰é¢
         }
 
-        //–îˆó•\¦‚Ì‚½‚ß‚É‚±‚±‚Éˆ—
+        //çŸ¢å°è¡¨ç¤ºã®ãŸã‚ã«ã“ã“ã«å‡¦ç†
         core.rootScene.on('touchmove', function (nowPos) {
-            //ƒvƒvƒ{ƒ^ƒ“‚ÌêŠ‚Å‰Ÿ‚µ‚Ä‚½ê‡
+            //ãƒ—ãƒ—ãƒœã‚¿ãƒ³ã®å ´æ‰€ã§æŠ¼ã—ã¦ãŸå ´åˆ
             if (tapObj == "pupuBtn") {
                 Arrow = ArrowSet(PUPU, pipiBtn, tapPos, nowPos, Arrow, core);
                 core.rootScene.addChild(Arrow);
             }
-                //ƒ|ƒ|ƒ{ƒ^ƒ“‚ÌêŠ‚Å‰Ÿ‚µ‚Ä‚½ê‡
+                //ãƒãƒãƒœã‚¿ãƒ³ã®å ´æ‰€ã§æŠ¼ã—ã¦ãŸå ´åˆ
             else if (tapObj == "popoBtn") {
                 Arrow = ArrowSet(POPO, pipiBtn, tapPos, nowPos, Arrow, core);
                 core.rootScene.addChild(Arrow);
             }
-                //ƒsƒsƒ{ƒ^ƒ“‚ÌêŠ‚Å‰Ÿ‚µ‚Ä‚½ê‡
+                //ãƒ”ãƒ”ãƒœã‚¿ãƒ³ã®å ´æ‰€ã§æŠ¼ã—ã¦ãŸå ´åˆ
             else if (tapObj == "pipiBtn") {
                 Arrow = ArrowSet(PIPI, pipiBtn, tapPos, nowPos, Arrow, core);
                 core.rootScene.addChild(Arrow);
@@ -403,7 +403,7 @@ window.onload = function ()
     core.start();
 };
 
-//ƒf[ƒ‚ƒ“ƒNƒ‰ƒX
+//ãƒ‡ãƒ¼ãƒ¢ãƒ³ã‚¯ãƒ©ã‚¹
 function Demon(Type, Direction, Level, PlayerID, Cost, HP, ATK, SPEED){
     this.Type = Type;
     this.Direction = Direction;
@@ -458,8 +458,8 @@ function CostCheck(_haveCost, demon) {
 
 function ArrowSet(demon, btn, startPos, endPos, Arrow, core)
 {
-    //À•W‚ÌˆÚ“®•‚ğŒ©‚Ä•ûŒüw’è
-    //ã•ûŒü
+    //åº§æ¨™ã®ç§»å‹•å¹…ã‚’è¦‹ã¦æ–¹å‘æŒ‡å®š
+    //ä¸Šæ–¹å‘æ™‚
     if ((startPos.y - endPos.y) > btn.height / 2 * btn.scaleY)
     {
         if (demon.Type == "PUPU")
@@ -484,7 +484,7 @@ function ArrowSet(demon, btn, startPos, endPos, Arrow, core)
             Arrow.rotation = 0;
         }        
     }
-    //‰º•ûŒü
+    //ä¸‹æ–¹å‘æ™‚
     else if ((startPos.y - endPos.y) < -btn.height / 2 * btn.scaleY)
     {
         if (demon.Type == "PUPU") {
@@ -506,7 +506,7 @@ function ArrowSet(demon, btn, startPos, endPos, Arrow, core)
             Arrow.rotation = 180;
         }
     }
-    //‰E•ûŒü
+    //å³æ–¹å‘æ™‚
     else if ((startPos.x - endPos.x) < -btn.height / 2 * btn.scaleX)
     {
         if (demon.Type == "PUPU") {
@@ -528,7 +528,7 @@ function ArrowSet(demon, btn, startPos, endPos, Arrow, core)
             Arrow.rotation = 90;
         }
     }
-    //¶•ûŒü
+    //å·¦æ–¹å‘æ™‚
     else if ((startPos.x - endPos.x) > btn.height / 2 * btn.scaleX)
     {
         if (demon.Type == "PUPU") {
@@ -554,10 +554,10 @@ function ArrowSet(demon, btn, startPos, endPos, Arrow, core)
     return Arrow;
 }
 
-//ƒf[ƒ‚ƒ“‚Ì‘—M
+//ãƒ‡ãƒ¼ãƒ¢ãƒ³ã®é€ä¿¡
 function PushDemon(demon, btn, startPos, endPos, setPlayerID)
 {
-    //À•W‚ÌˆÚ“®•‚ğŒ©‚Ä•ûŒüw’è
+    //åº§æ¨™ã®ç§»å‹•å¹…ã‚’è¦‹ã¦æ–¹å‘æŒ‡å®š
     if ((startPos.y - endPos.y) > btn.height / 2 * btn.scaleY) {
         demon.Direction = "Top";
     }
@@ -570,23 +570,28 @@ function PushDemon(demon, btn, startPos, endPos, setPlayerID)
     else {
         demon.Direction = "None";
     }
-    //ƒvƒŒƒCƒ„[IDİ’è
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼IDè¨­å®š
     demon.PlayerID = setPlayerID;
 
-    //ƒf[ƒ^‘—M
+    //ãƒ‡ãƒ¼ã‚¿é€ä¿¡
     if (demon.Direction != "None")
         socket.emit("DemonPush", { Type: demon.Type, Direction: demon.Direction, Level: demon.Level, PlayerID: demon.PlayerID });
 
-    //ƒƒOo—Í
+    //ãƒ­ã‚°å‡ºåŠ›
     console.log(demon.Type);
     console.log(demon.Direction);
     console.log(demon.Level);
     console.log(demon.PlayerID);
 }
 
-//•KE‹Z‘—M
+//å¿…æ®ºæŠ€é€ä¿¡
 function PushDeadly(setPlayerID)
 {
     socket.emit("DeadlyPush", { Deadly: "Fire", PlayerID: setPlayerID});
     console.log("DeadlyPushed");
+}
+
+window.onerror = function(error)
+{
+    alert(error);
 }
