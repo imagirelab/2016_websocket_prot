@@ -30,10 +30,12 @@ window.onload = function ()
     var tapPos = new TapPos();
     //なにをタップしたかの確認
     var tapObj;
-    //フラグ
+    //コストが払えるかのフラグ
     var Flag;
     //タイマー
     var Timer;
+    //必殺技を撃ったかのフラグ
+    var deadlyFlag;
 
     //事前にロードを行う
     //背景
@@ -49,6 +51,9 @@ window.onload = function ()
     core.preload('img/ya_blue.png');
     core.preload('img/ya_green.png');
     core.preload('img/ya_red.png');
+    core.preload('img/deadly.png');
+    core.preload('img/deadly2.png');
+    core.preload('img/deadly3.png');
 
     //UI・フォント
     core.preload('img/CP.png');
@@ -56,6 +61,9 @@ window.onload = function ()
     core.preload('img/huki_blue.png');
     core.preload('img/huki_green.png');
     core.preload('img/huki_red.png');
+    core.preload('img/ponpu1.png');
+    core.preload('img/ponpu3.png');
+    core.preload('img/ponpu3.5.png');
 
     //fpsの設定
     core.fps = 30;
@@ -88,6 +96,16 @@ window.onload = function ()
         pipiBtn.x = 2200;
         pipiBtn.y = 900;
 
+        //必殺技のボタン
+        var deadlyBtn = new Sprite(300, 300);
+        deadlyBtn.image = core.assets['img/deadly.png'];
+        deadlyBtn.scale(1.5, 1.5);
+        deadlyBtn.x = 200;
+        deadlyBtn.y = 750;
+
+        var btn = new Button("", deadlyBtn);
+        btn.moveTo(100, 100);
+
         //背景
         var back = new Sprite(3200, 1800);
         back.image = core.assets['img/back5.png'];
@@ -115,6 +133,27 @@ window.onload = function ()
         PIPI_UI.scale(1.2, 1.2);
         PIPI_UI.x = 1900;
         PIPI_UI.y = 1200;
+
+        //ポンプケーブル
+        var ponpuCable = new Sprite(600, 600);
+        ponpuCable.image = core.assets['img/ponpu1.png'];
+        ponpuCable.scale(3, 3);
+        ponpuCable.x = 1000;
+        ponpuCable.y = 600;
+
+        //ポンプ本体
+        var ponpu = new Sprite(600, 600);
+        ponpu.image = core.assets['img/ponpu3.png'];
+        ponpu.scale(3, 3);
+        ponpu.x = 1000;
+        ponpu.y = 600;
+
+        //ポンプの上からかぶせるガラスケース
+        var ponpuCover = new Sprite(600, 600);
+        ponpuCover.image = core.assets['img/ponpu3.5.png'];
+        ponpuCover.scale(3, 3);
+        ponpuCover.x = 1000;
+        ponpuCover.y = 600;
 
         //矢印
         var Arrow = new Sprite(600, 600);
@@ -181,6 +220,13 @@ window.onload = function ()
             tapObj = "pipiBtn";
         });
 
+        deadlyBtn.on('touchstart', function () {
+            if (deadlyFlag != true) {
+                deadlyBtn.image = core.assets['img/deadly2.png'];
+                tapObj = "deadlyBtn";
+            }
+        });
+
         //タップした場所の座標取得
         core.rootScene.on('touchstart', function (startPos)
         {
@@ -198,7 +244,20 @@ window.onload = function ()
         });
 
         pipiBtn.on('touchend', function () {
+            console.log("call");
             pipiBtn.image = core.assets['img/pipi.png'];            
+        });
+
+        deadlyBtn.on('touchend', function ()
+        {
+            if (deadlyFlag == true)
+            {
+                deadlyBtn.image = core.assets['img/deadly3.png'];
+            }
+            else
+            {
+                deadlyBtn.image = core.assets['img/deadly.png'];
+            }           
         });
 
         //タップした場所を使った処理はここから
@@ -239,6 +298,12 @@ window.onload = function ()
         core.rootScene.addChild(pupuBtn);
         core.rootScene.addChild(popoBtn);
         core.rootScene.addChild(pipiBtn);
+        core.rootScene.addChild(deadlyBtn);
+        core.rootScene.addChild(btn);
+
+        core.rootScene.addChild(ponpuCable);
+        core.rootScene.addChild(ponpu);
+        core.rootScene.addChild(ponpuCover);
 
         core.rootScene.addChild(PUPU_UI);
         core.rootScene.addChild(POPO_UI);
