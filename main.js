@@ -299,11 +299,6 @@ window.onload = function ()
             //ポポボタンの場所で押してた場合
             else if(tapObj == "popoBtn")
             {
-                Flag = FlagCheck(haveCost, POPO, Flag);
-                haveCost = CostCheck(haveCost, POPO);
-                if (Flag == "Succes")
-                    PushDemon(POPO, popoBtn, tapPos, endPos, PlayerID);
-
                 if ((tapPos.y - endPos.y) > popoBtn.height / 2 * popoBtn.scaleY) {
                     Flag = FlagCheck(haveCost, POPO, Flag);
                     haveCost = CostCheck(haveCost, POPO);
