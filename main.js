@@ -1,5 +1,5 @@
-//var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
-var socket = io.connect('ws://192.168.198.144:5555/');
+var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
+//var socket = io.connect('ws://192.168.198.144:5555/');
 //var socket = io.connect('ws://localhost:5555/');
 //var socket = io.connect('ws://192.168.11.250:5555/', {transports: ["websocket"]});
 
@@ -303,6 +303,11 @@ window.onload = function ()
             degree += 0.2;
         });
 
+        socket.on("PushStopRequest", function ()
+        {
+            console.log("called");
+        });
+
         //ボタンが押された時の処理
         pupuBtn.on('touchstart', function ()
         {
@@ -509,7 +514,8 @@ window.onload = function ()
         core.rootScene.addChild(PIPI_UI);
 
         //矢印表示のためにここに処理
-        core.rootScene.on('touchmove', function (nowPos) {
+        core.rootScene.on('touchmove', function (nowPos)
+        {
             //ププボタンの場所で押してた場合
             if (tapObj == "pupuBtn") {
                 Arrow = ArrowSet(PUPU, pipiBtn, tapPos, nowPos, Arrow, core);
@@ -526,10 +532,13 @@ window.onload = function ()
                 core.rootScene.addChild(Arrow);
             }
         });
-        core.rootScene.on('touchend', function () {
+
+        core.rootScene.on('touchend', function ()
+        {
             Arrow.x = 9000;
             Arrow.y = -9000;
         });
+
         //魂の受け取り&描画処理
         socket.on("SpiritPushed", function (SpiritData)
         {
