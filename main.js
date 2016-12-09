@@ -1,5 +1,6 @@
-var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
-//var socket = io.connect('ws://192.168.11.250:5555', {forceJSONP: true});
+//var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
+//var socket = io.connect('ws://192.168.11.250:5555');
+var socket = io.connect('ws://localhost:5555');
 //var socket = io.connect('ws://192.168.11.250:5555', {transports: ["websocket"]});
 
 var myPlayerID = 0;
@@ -10,7 +11,11 @@ socket.on("connect", function () {
     socket.emit("EnterRobby");
 });
 
-
+//プレイヤーIDのセット
+socket.on("PushPlayerID", function (idData) {
+    myPlayerID = idData.PlayerID;
+    console.log("Connect PlayerID: " + myPlayerID);
+});
 
 enchant();
 
@@ -103,12 +108,6 @@ window.onload = function ()
 
     core.onload = function ()
     {
-        //プレイヤーIDのセット
-        socket.on("PushPlayerID", function (idData) {
-            myPlayerID = idData.PlayerID;
-            console.log("Connect PlayerID: " + myPlayerID);
-        });
-
         //フレームリセット
         core.frame = 0;
 
