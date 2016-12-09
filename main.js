@@ -1,6 +1,7 @@
 //var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
 var socket = io.connect('ws://192.168.198.144:5555');
 
+//test
 var myPlayerID = 0;
 
 socket.on("connect", function () {
@@ -17,47 +18,47 @@ window.onload = function ()
 {
     var core = new Core(3200, 1800);
 
-    //悪魔               Type     Dir  Level ID   BASECOST COST  HP  ATK  SPEED    
+    //悪魁E              Type     Dir  Level ID   BASECOST COST  HP  ATK  SPEED    
     var PUPU = new Demon("PUPU", "None", 0, null, 100,     100, 200, 500, 6);
     var POPO = new Demon("POPO", "None", 0, null, 100,     100, 200, 500, 6);
     var PIPI = new Demon("PIPI", "None", 0, null, 100,     100, 200, 500, 6);
 
-    //自分の初期所持コスト
+    //自刁E�E初期所持コスチE
     var haveCost = 500;
 
-    //最大所持コスト
+    //最大所持コスチE
     var MaxCost = 3000;
 
-    //毎秒取得できるコスト
+    //毎秒取得できるコスチE
     var fpsCost = 25;
 
-    //タッチし始めの場所を確認
+    //タチE��し始めの場所を確誁E
     var tapPos = new TapPos();
-    //なにをタップしたかの確認
+    //なにをタチE�Eしたか�E確誁E
     var tapObj;
     //コストが払えるかのフラグ
     var Flag;
-    //タイマー
+    //タイマ�E
     var Timer;
 
-    //必殺技を撃ったかのフラグ
+    //忁E��技を撃ったかのフラグ
     var deadlyFlag;
-    //必殺技コスト数
+    //忁E��技コスト数
     var deadlyCost = 10;
-    //パワーアップのコストが増える間隔
+    //パワーアチE�Eのコストが増える間隁E
     var powerUpInterval = 5;
 
-    //10個までの魂保管用配列
+    //10個までの魂保管用配�E
     var spiritsLength = 10;
     var Spirits = new Array(spiritsLength);
     for (var i = 0; i < spiritsLength; i++)
     {
         Spirits[i] = null;
     }
-    //魂をふよふよさせるために必要な変数
+    //魂をふよ�Eよさせるために忁E��な変数
     var degree = 0;
 
-    //キー割り当て(デバッグ用)
+    //キー割り当て(チE��チE��用)
     core.keybind(' '.charCodeAt(0), 'summonSpirit');
 
     //押した時に一回だけ呼ばれるようにするためのフラグ
@@ -81,7 +82,7 @@ window.onload = function ()
     core.preload('img/deadly2.png');
     core.preload('img/deadly3.png');
 
-    //UI・フォント
+    //UI・フォンチE
     core.preload('img/CP.png');
     core.preload('img/rednumber_siro.png');
     core.preload('img/blacknumber.png');
@@ -92,35 +93,35 @@ window.onload = function ()
     core.preload('img/ponpu3.png');
     core.preload('img/ponpu3.5.png');
 
-    //スピリット
+    //スピリチE��
     core.preload('img/pupu_soul.png');
     core.preload('img/popo_soul.png');
     core.preload('img/pipi_soul.png');
 
-    //fpsの設定
+    //fpsの設宁E
     core.fps = 30;
 
     core.onload = function ()
     {
-        //プレイヤーIDのセット
+        //プレイヤーIDのセチE��
         socket.on("PushPlayerID", function (idData) {
             myPlayerID = idData.PlayerID;
             console.log("Connect PlayerID: " + myPlayerID);
         });
 
-        //フレームリセット
+        //フレームリセチE��
         core.frame = 0;
 
-        ////////画像情報処理////////
+        ////////画像情報処琁E///////
 
-        //ププのボタン
+        //プ�Eのボタン
         var pupuBtn = new Sprite(1200, 1200);
         pupuBtn.image = core.assets['img/pupu.png'];
         pupuBtn.scale(0.25, 0.25);
         pupuBtn.x = 2200;
         pupuBtn.y = -300;
 
-        //ポポのボタン
+        //ポ�Eのボタン
         var popoBtn = new Sprite(1200, 1200);
         popoBtn.image = core.assets['img/popo.png'];
         popoBtn.scale(0.25, 0.25);
@@ -134,7 +135,7 @@ window.onload = function ()
         pipiBtn.x = 2200;
         pipiBtn.y = 900;
 
-        //必殺技のボタン
+        //忁E��技のボタン
         var deadlyBtn = new Sprite(300, 300);
         deadlyBtn.image = core.assets['img/deadly.png'];
         deadlyBtn.scale(1.5, 1.5);
@@ -148,14 +149,14 @@ window.onload = function ()
         back.y = 0;
 
         //UI
-        //ププのUI背景
+        //プ�EのUI背景
         var PUPU_UI = new Sprite(600, 600);
         PUPU_UI.image = core.assets['img/huki_red.png'];
         PUPU_UI.scale(1.2, 1.2);
         PUPU_UI.x = 1900;
         PUPU_UI.y = 0;
 
-        //ポポのUI背景
+        //ポ�EのUI背景
         var POPO_UI = new Sprite(600, 600);
         POPO_UI.image = core.assets['img/huki_green.png'];
         POPO_UI.scale(1.2, 1.2);
@@ -176,14 +177,14 @@ window.onload = function ()
         ponpuCable.x = 1200;
         ponpuCable.y = 600;
 
-        //ポンプ本体
+        //ポンプ本佁E
         var ponpu = new Sprite(600, 600);
         ponpu.image = core.assets['img/ponpu3.png'];
         ponpu.scale(3, 3);
         ponpu.x = 1200;
         ponpu.y = 600;
 
-        //ポンプの上からかぶせるガラスケース
+        //ポンプ�E上からかぶせるガラスケース
         var ponpuCover = new Sprite(600, 600);
         ponpuCover.image = core.assets['img/ponpu3.5.png'];
         ponpuCover.scale(3, 3);
@@ -197,16 +198,16 @@ window.onload = function ()
         Arrow.x = 5000;
         Arrow.y = -5000;
 
-        //CPのフォント
+        //CPのフォンチE
         var CPFont = new Sprite(150, 150);
         CPFont.image = core.assets['img/CP.png'];
         CPFont.scale(1, 1);
         CPFont.x = 1300;
         CPFont.y = 1600;
 
-        //所持コストのフォント
+        //所持コスト�EフォンチE
         var costFont = new Array();
-        var costDigit = 4;  //桁数(初期設定4桁)
+        var costDigit = 4;  //桁数(初期設宁E桁E
         for (var i = 0; i < costDigit; i++)
         {
             costFont[i] = new Sprite(120, 120);
@@ -217,8 +218,8 @@ window.onload = function ()
             costFont[i].frame = 0;
         }
 
-        //デーモンに必要なコストのフォント
-        var DemoncostDigit = 3;  //桁数(初期設定3桁)
+        //チE�Eモンに忁E��なコスト�EフォンチE
+        var DemoncostDigit = 3;  //桁数(初期設宁E桁E
 
         var PUPUcostFont = new Array();
         for (var i = 0; i < DemoncostDigit; i++) {
@@ -251,8 +252,8 @@ window.onload = function ()
             PIPIcostFont[i].frame = 0;
         }
 
-        ////////メイン処理////////
-        //フレームごとに処理する
+        ////////メイン処琁E///////
+        //フレームごとに処琁E��めE
         core.addEventListener('enterframe', function ()
         {
             if (core.frame % core.fps == 0)
@@ -263,7 +264,7 @@ window.onload = function ()
                     haveCost = MaxCost;
             }
 
-            //CPフォント
+            //CPフォンチE
             for (var i = costDigit - 1; i >= 0; i--)
             {
                 FontSet(haveCost, i, costFont[i]);
@@ -276,7 +277,7 @@ window.onload = function ()
                 FontSet(PIPI.Cost, i, PIPIcostFont[i]);
             }
 
-            //スペースボタンを押すと魂が取得できるように
+            //スペ�Eスボタンを押すと魂が取得できるように
             core.addEventListener('summonSpiritbuttondown', function ()
             {
                 oneCallFlag = true;
@@ -303,7 +304,7 @@ window.onload = function ()
             degree += 0.2;
         });
 
-        //ボタンが押された時の処理
+        //ボタンが押された時の処琁E
         pupuBtn.on('touchstart', function ()
         {
             pupuBtn.image = core.assets['img/pupu2.png'];
@@ -330,14 +331,14 @@ window.onload = function ()
             }
         });
 
-        //タップした場所の座標取得
+        //タチE�Eした場所の座標取征E
         core.rootScene.on('touchstart', function (startPos)
         {
             tapPos.x = startPos.x;
             tapPos.y = startPos.y;
         });
 
-        //離された時の処理
+        //離された時の処琁E
         pupuBtn.on('touchend', function () {
             pupuBtn.image = core.assets['img/pupu.png'];
         });
@@ -355,17 +356,17 @@ window.onload = function ()
         {
             if(!deadlyFlag)
             {
-                //必殺コスト分の魂があるか確認。
+                //忁E��コスト�Eの魂があるか確認、E
                 if (SpiritCheck(Spirits, deadlyCost, spiritsLength))
                 {
                     deadlyBtn.image = core.assets['img/deadly3.png'];
-                    //ここで必殺情報をサーバーに送る
+                    //ここで忁E��惁E��をサーバ�Eに送る
                     PushDeadly(myPlayerID);
                     //コストを最大に回復
                     haveCost = MaxCost;
-                    //使用フラグを立てる
+                    //使用フラグを立てめE
                     deadlyFlag = true;
-                    //使用した魂の削除
+                    //使用した魂�E削除
                     Spirits = UsedSpirits(Spirits, deadlyCost, spiritsLength, core);
                 }
                 else
@@ -375,10 +376,10 @@ window.onload = function ()
             }
         });
 
-        //タップした場所を使った処理はここから
+        //タチE�Eした場所を使った�E琁E�Eここから
         core.rootScene.on('touchend', function (endPos)
         {
-            //ププボタンの場所で押してた場合
+            //プ�Eボタンの場所で押してた場吁E
             if(tapObj == "pupuBtn")
             {
                 if ((tapPos.y - endPos.y) > pupuBtn.height / 2 * pupuBtn.scaleY) 
@@ -402,19 +403,19 @@ window.onload = function ()
                     if (Flag == "Succes")
                         PushDemon(PUPU, pupuBtn, tapPos, endPos, myPlayerID);
                 }
-                //パワーアップを選択時
+                //パワーアチE�Eを選択時
                 else
                 {
                     if(SpiritCheck(Spirits, Math.floor(PUPU.Level / powerUpInterval + 1), spiritsLength))
                     {
                         PUPU.Level += 1;
                         PUPU.Cost = PUPU.BaseCost + PUPU.Level * 10;
-                        //使用した魂の削除
+                        //使用した魂�E削除
                         Spirits = UsedSpirits(Spirits, Math.floor(PUPU.Level / powerUpInterval + 1), spiritsLength, core);
                     }
                 }
             }
-            //ポポボタンの場所で押してた場合
+            //ポ�Eボタンの場所で押してた場吁E
             else if(tapObj == "popoBtn")
             {
                 if ((tapPos.y - endPos.y) > popoBtn.height / 2 * popoBtn.scaleY) 
@@ -438,19 +439,19 @@ window.onload = function ()
                     if (Flag == "Succes")
                         PushDemon(POPO, popoBtn, tapPos, endPos, myPlayerID);
                 }
-                //パワーアップを選択時
+                //パワーアチE�Eを選択時
                 else 
                 {
                     if (SpiritCheck(Spirits, Math.floor(POPO.Level / powerUpInterval + 1), spiritsLength))
                     {
                         POPO.Level += 1;
                         POPO.Cost = POPO.BaseCost + POPO.Level * 10;
-                        //使用した魂の削除
+                        //使用した魂�E削除
                         Spirits = UsedSpirits(Spirits, Math.floor(POPO.Level / powerUpInterval + 1), spiritsLength, core);
                     }
                 }
             }
-            //ピピボタンの場所で押してた場合
+            //ピピボタンの場所で押してた場吁E
             else if(tapObj == "pipiBtn")
             {
                 if ((tapPos.y - endPos.y) > pipiBtn.height / 2 * pipiBtn.scaleY) 
@@ -474,14 +475,14 @@ window.onload = function ()
                     if (Flag == "Succes")
                         PushDemon(PIPI, pipiBtn, tapPos, endPos, myPlayerID);
                 }
-                //パワーアップを選択時
+                //パワーアチE�Eを選択時
                 else
                 {
                     if (SpiritCheck(Spirits, Math.floor(PIPI.Level / powerUpInterval + 1), spiritsLength))
                     {
                         PIPI.Level += 1;
                         PIPI.Cost = PIPI.BaseCost + PIPI.Level * 10;
-                        //使用した魂の削除
+                        //使用した魂�E削除
                         Spirits = UsedSpirits(Spirits, Math.floor(PIPI.Level / powerUpInterval + 1), spiritsLength, core);
                     }
                 }
@@ -492,7 +493,7 @@ window.onload = function ()
         });
 
         ////////描画////////
-        //オブジェクトに追加する処理(ここに入れたいオブジェクトを描画順に指定)
+        //オブジェクトに追加する処琁Eここに入れたぁE��ブジェクトを描画頁E��持E��E
         /////////////背景/////////////
         core.rootScene.addChild(back);  
 
@@ -508,19 +509,19 @@ window.onload = function ()
         core.rootScene.addChild(POPO_UI);
         core.rootScene.addChild(PIPI_UI);
 
-        //矢印表示のためにここに処理
+        //矢印表示のためにここに処琁E
         core.rootScene.on('touchmove', function (nowPos) {
-            //ププボタンの場所で押してた場合
+            //プ�Eボタンの場所で押してた場吁E
             if (tapObj == "pupuBtn") {
                 Arrow = ArrowSet(PUPU, pipiBtn, tapPos, nowPos, Arrow, core);
                 core.rootScene.addChild(Arrow);
             }
-                //ポポボタンの場所で押してた場合
+                //ポ�Eボタンの場所で押してた場吁E
             else if (tapObj == "popoBtn") {
                 Arrow = ArrowSet(POPO, pipiBtn, tapPos, nowPos, Arrow, core);
                 core.rootScene.addChild(Arrow);
             }
-                //ピピボタンの場所で押してた場合
+                //ピピボタンの場所で押してた場吁E
             else if (tapObj == "pipiBtn") {
                 Arrow = ArrowSet(PIPI, pipiBtn, tapPos, nowPos, Arrow, core);
                 core.rootScene.addChild(Arrow);
@@ -530,7 +531,7 @@ window.onload = function ()
             Arrow.x = 9000;
             Arrow.y = -9000;
         });
-        //魂の受け取り&描画処理
+        //魂�E受け取り&描画処琁E
         socket.on("SpiritPushed", function (SpiritData)
         {
             if (SpiritData.PlayerID == myPlayerID)
@@ -551,7 +552,7 @@ window.onload = function ()
 
         core.rootScene.addChild(ponpuCover);
 
-        //フォント
+        //フォンチE
         core.rootScene.addChild(CPFont);
         for (var i = 0; i < costDigit; i++)
         {
@@ -570,7 +571,7 @@ window.onload = function ()
 };
 
 /////////////////クラス/////////////////
-//デーモンクラス
+//チE�Eモンクラス
 function Demon(Type, Direction, Level, PlayerID, BaseCost, Cost, HP, ATK, SPEED){
     this.Type = Type;
     this.Direction = Direction;
@@ -587,7 +588,7 @@ function TapPos(x, y) {
     this.x = x;
     this.y = y;
 }
-//スピリットクラス
+//スピリチE��クラス
 function Spirit(Type, PlayerID, core)
 {
     this.Type = Type;
@@ -657,13 +658,13 @@ function SpiritCheck(_Spirits, _Cost, Length)
     var countSpirit = 0;
     for(var i = 0; i < Length; i++)
     {
-        //ここでスピリットデータがあるかの確認をする。
+        //ここでスピリチE��チE�Eタがあるかの確認をする、E
         if (_Spirits[i] != null)
         {
             countSpirit += 1;
         }
     }
-    //スピリット量が必殺技コストより多い場合trueを返す
+    //スピリチE��量が忁E��技コストより多い場吁Erueを返す
     if (countSpirit >= _Cost)
     {
         return true;
@@ -695,7 +696,7 @@ function UsedSpirits(_Spirits, _Cost, Length, core)
 
 function ArrowSet(demon, btn, startPos, endPos, Arrow, core)
 {
-    //座標の移動幅を見て方向指定
+    //座標�E移動幁E��見て方向指宁E
     //上方向時
     if ((startPos.y - endPos.y) > btn.height / 2 * btn.scaleY)
     {
@@ -791,10 +792,10 @@ function ArrowSet(demon, btn, startPos, endPos, Arrow, core)
     return Arrow;
 }
 
-//デーモンの送信
+//チE�Eモンの送信
 function PushDemon(demon, btn, startPos, endPos, setPlayerID)
 {
-    //座標の移動幅を見て方向指定
+    //座標�E移動幁E��見て方向指宁E
     if ((startPos.y - endPos.y) > btn.height / 2 * btn.scaleY) {
         demon.Direction = "Top";
     }
@@ -807,28 +808,28 @@ function PushDemon(demon, btn, startPos, endPos, setPlayerID)
     else {
         demon.Direction = "None";
     }
-    //プレイヤーID設定
+    //プレイヤーID設宁E
     demon.PlayerID = setPlayerID;
 
-    //データ送信
+    //チE�Eタ送信
     if (demon.Direction != "None")
         socket.emit("DemonPush", { Type: demon.Type, Direction: demon.Direction, Level: demon.Level, PlayerID: demon.PlayerID });
 
-    //ログ出力
+    //ログ出劁E
     console.log(demon.Type);
     console.log(demon.Direction);
     console.log(demon.Level);
     console.log(demon.PlayerID);
 }
 
-//必殺技送信
+//忁E��技送信
 function PushDeadly(setPlayerID)
 {
     socket.emit("DeadlyPush", { Deadly: "Fire", PlayerID: setPlayerID});
     console.log("DeadlyPushed");
 }
 
-//エラー時アラートが呼び出されるように
+//エラー時アラートが呼び出されるよぁE��
 window.onerror = function(error)
 {
     alert(error);
