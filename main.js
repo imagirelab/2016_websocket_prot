@@ -1,5 +1,5 @@
-var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
-//var socket = io.connect('ws://192.168.11.250:5555/');
+//var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
+var socket = io.connect('ws://192.168.198.144:5555/');
 //var socket = io.connect('ws://localhost:5555/');
 //var socket = io.connect('ws://192.168.11.250:5555/', {transports: ["websocket"]});
 
