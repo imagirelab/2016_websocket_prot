@@ -1,6 +1,5 @@
 var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
-//var socket = io.connect('ws://192.168.11.250:5555', {forceJSONP: true});
-//var socket = io.connect('ws://192.168.11.250:5555', {transports: ["websocket"]});
+//var socket = io.connect('ws://192.168.11.250:3000');
 
 var myPlayerID = 0;
 
@@ -18,9 +17,9 @@ window.onload = function ()
     var core = new Core(3200, 1800);
 
     //悪魔               Type     Dir  Level ID   BASECOST COST  HP  ATK  SPEED    
-    var PUPU = new Demon("PUPU", "None", 0, null, 100,     100, 200, 500, 6);
-    var POPO = new Demon("POPO", "None", 0, null, 100,     100, 200, 500, 6);
-    var PIPI = new Demon("PIPI", "None", 0, null, 100,     100, 200, 500, 6);
+    var PUPU = new Demon("PUPU", "None", 0, null, 100,     100, 250, 250, 5);
+    var POPO = new Demon("POPO", "None", 0, null, 100,     100, 1000, 100, 3);
+    var PIPI = new Demon("PIPI", "None", 0, null, 100,     100, 150, 50, 10);
 
     //自分の初期所持コスト
     var haveCost = 500;
@@ -30,6 +29,11 @@ window.onload = function ()
 
     //毎秒取得できるコスト
     var fpsCost = 25;
+
+    //最大ステータス
+    var MAXHP = 500;
+    var MAXATK = 250;
+    var MAXSPEED = 2;
 
     //タッチし始めの場所を確認
     var tapPos = new TapPos();
@@ -111,11 +115,17 @@ window.onload = function ()
     core.preload('matchingUI/setumei6.png');
     core.preload('matchingUI/setumei7.png');
     core.preload('matchingUI/setumei8.png');
+    core.preload('img/baratack.png');
+    core.preload('img/barhp.png');
+    core.preload('img/barspeed.png');
 
     //スピリット
     core.preload('img/pupu_soul.png');
     core.preload('img/popo_soul.png');
     core.preload('img/pipi_soul.png');
+
+    //gif
+    core.preload('img/sumahotatti.png');
 
     //fpsの設定
     core.fps = 30;
@@ -146,24 +156,32 @@ window.onload = function ()
             tapRequest.x = 1088;
             tapRequest.y = 1200;
 
+            var PUPUgif = new Sprite(600, 600);
+            PUPUgif.image = core.assets['img/sumahotatti.png'];
+            PUPUgif.x = 2400;
+            PUPUgif.y = 1200;
+            PUPUgif.frame = 0;
+
             scene.addEventListener('enterframe', function ()
             {
                 var radian = Math.PI / 180 * degree;
                 tapRequest.y += Math.sin(radian);
                 degree += 3;
+                PUPUgif.frame = PUPUgif.age % 24;
             });
 
             ////////メイン処理////////
             scene.addEventListener(Event.TOUCH_START, function ()
             {
                 //現在表示しているシーンをゲームシーンに置き換えます
-                core.replaceScene(MainScene());              
+                core.replaceScene(MatchingScene());              
             });            
 
             ////////描画////////
             scene.addChild(titleBack);
             scene.addChild(title);
             scene.addChild(tapRequest);
+            scene.addChild(PUPUgif);
 
             return scene;
         };
@@ -255,21 +273,21 @@ window.onload = function ()
             //ププのUI背景
             var PUPU_UI = new Sprite(600, 600);
             PUPU_UI.image = core.assets['img/huki_red.png'];
-            PUPU_UI.scale(1.2, 1.2);
+            PUPU_UI.scale(1.5, 1.2);
             PUPU_UI.x = 1900;
             PUPU_UI.y = 0;
 
             //ポポのUI背景
             var POPO_UI = new Sprite(600, 600);
             POPO_UI.image = core.assets['img/huki_green.png'];
-            POPO_UI.scale(1.2, 1.2);
+            POPO_UI.scale(1.5, 1.2);
             POPO_UI.x = 1900;
             POPO_UI.y = 600;
 
             //ピピのUI背景
             var PIPI_UI = new Sprite(600, 600);
             PIPI_UI.image = core.assets['img/huki_blue.png'];
-            PIPI_UI.scale(1.2, 1.2);
+            PIPI_UI.scale(1.5, 1.2);
             PIPI_UI.x = 1900;
             PIPI_UI.y = 1200;
 
@@ -353,6 +371,84 @@ window.onload = function ()
                 PIPIcostFont[i].frame = 0;
             }
 
+            //ステータスバー部分
+            var PUPUStatusBar = new Array();
+            //スプライトサイズ読み込み(HP:ATK:SPEEDの順)
+            PUPUStatusBar[0] = new Sprite(600, 600);
+            PUPUStatusBar[1] = new Sprite(600, 600);
+            PUPUStatusBar[2] = new Sprite(600, 600);
+            //イメージの画像読み込み
+            PUPUStatusBar[0].image = core.assets['img/barhp.png'];
+            PUPUStatusBar[1].image = core.assets['img/baratack.png'];
+            PUPUStatusBar[2].image = core.assets['img/barspeed.png'];
+            //スケールの設定
+            PUPUStatusBar[0].scale(0.15, 0.15);
+            PUPUStatusBar[1].scale(0.15, 0.15);
+            PUPUStatusBar[2].scale(0.15, 0.15);
+            //横幅(成長度合いを横幅で調整)
+            PUPUStatusBar[0].width = PUPU.HP * Math.pow(1.1, PUPU.Level) / MAXHP * 600;
+            PUPUStatusBar[1].width = PUPU.ATK * Math.pow(1.1, PUPU.Level) / MAXATK * 600;
+            PUPUStatusBar[2].width = PUPU.SPEED / MAXSPEED * 600;
+            //座標設定
+            PUPUStatusBar[0].originX = 2200;
+            PUPUStatusBar[0].originY = 300;
+            PUPUStatusBar[1].originX = 2200;
+            PUPUStatusBar[1].originY = 400;
+            PUPUStatusBar[2].originX = 2200;
+            PUPUStatusBar[2].originY = 500;
+
+            //ステータスバー部分
+            var POPOStatusBar = new Array();
+            //スプライトサイズ読み込み(HP:ATK:SPEEDの順)
+            POPOStatusBar[0] = new Sprite(600, 600);
+            POPOStatusBar[1] = new Sprite(600, 600);
+            POPOStatusBar[2] = new Sprite(600, 600);
+            //イメージの画像読み込み
+            POPOStatusBar[0].image = core.assets['img/barhp.png'];
+            POPOStatusBar[1].image = core.assets['img/baratack.png'];
+            POPOStatusBar[2].image = core.assets['img/barspeed.png'];
+            //スケールの設定
+            POPOStatusBar[0].scale(0.15, 0.15);
+            POPOStatusBar[1].scale(0.15, 0.15);
+            POPOStatusBar[2].scale(0.15, 0.15);
+            //横幅(成長度合いを横幅で調整)
+            POPOStatusBar[0].width = POPO.HP * Math.pow(1.1, POPO.Level) / MAXHP * 600;
+            POPOStatusBar[1].width = POPO.ATK * Math.pow(1.1, POPO.Level) / MAXATK * 600;
+            POPOStatusBar[2].width = POPO.SPEED / MAXSPEED * 600;
+            //座標設定
+            POPOStatusBar[0].originX = 2200;
+            POPOStatusBar[0].originY = 1000;
+            POPOStatusBar[1].originX = 2200;
+            POPOStatusBar[1].originY = 1100;
+            POPOStatusBar[2].originX = 2200;
+            POPOStatusBar[2].originY = 1200;
+
+            //ステータスバー部分
+            var PIPIStatusBar = new Array();
+            //スプライトサイズ読み込み(HP:ATK:SPEEDの順)
+            PIPIStatusBar[0] = new Sprite(600, 600);
+            PIPIStatusBar[1] = new Sprite(600, 600);
+            PIPIStatusBar[2] = new Sprite(600, 600);
+            //イメージの画像読み込み
+            PIPIStatusBar[0].image = core.assets['img/barhp.png'];
+            PIPIStatusBar[1].image = core.assets['img/baratack.png'];
+            PIPIStatusBar[2].image = core.assets['img/barspeed.png'];
+            //スケールの設定
+            PIPIStatusBar[0].scale(0.15, 0.15);
+            PIPIStatusBar[1].scale(0.15, 0.15);
+            PIPIStatusBar[2].scale(0.15, 0.15);
+            //横幅(成長度合いを横幅で調整)
+            PIPIStatusBar[0].width = PIPI.HP * Math.pow(1.1, PIPI.Level) / MAXHP * 600;
+            PIPIStatusBar[1].width = PIPI.ATK * Math.pow(1.1, PIPI.Level) / MAXATK * 600;
+            PIPIStatusBar[2].width = PIPI.SPEED / MAXSPEED * 600;
+            //座標設定
+            PIPIStatusBar[0].originX = 2200;
+            PIPIStatusBar[0].originY = 1700;
+            PIPIStatusBar[1].originX = 2200;
+            PIPIStatusBar[1].originY = 1800;
+            PIPIStatusBar[2].originX = 2200;
+            PIPIStatusBar[2].originY = 1900;
+
             ////////メイン処理////////
             //フレームごとに処理する
             core.addEventListener('enterframe', function ()
@@ -395,26 +491,37 @@ window.onload = function ()
                     }
                 }
 
+                //スケールの設定を毎フレーム確認(成長度合いをスケールで調整)
+                PUPUStatusBar[0].width = PUPU.HP * Math.pow(1.1, PUPU.Level) / MAXHP * 600;
+                PUPUStatusBar[1].width = PUPU.ATK * Math.pow(1.1, PUPU.Level) / MAXATK * 600;
+                PUPUStatusBar[2].width = PUPU.SPEED / MAXSPEED * 600;
+                POPOStatusBar[0].width = POPO.HP * Math.pow(1.1, POPO.Level) / MAXHP * 600;
+                POPOStatusBar[1].width = POPO.ATK * Math.pow(1.1, POPO.Level) / MAXATK * 600;
+                POPOStatusBar[2].width = POPO.SPEED / MAXSPEED * 600;
+                PIPIStatusBar[0].width = PIPI.HP * Math.pow(1.1, PIPI.Level) / MAXHP * 600;
+                PIPIStatusBar[1].width = PIPI.ATK * Math.pow(1.1, PIPI.Level) / MAXATK * 600;
+                PIPIStatusBar[2].width = PIPI.SPEED / MAXSPEED * 600;
+
                 degree += 1.5;
             });
 
             //ボタンが押された時の処理
-            pupuBtn.on('touchstart', function () {
+            pupuBtn.on(Event.TOUCH_START, function () {
                 pupuBtn.image = core.assets['img/pupu2.png'];
                 tapObj = "pupuBtn";
             });
 
-            popoBtn.on('touchstart', function () {
+            popoBtn.on(Event.TOUCH_START, function () {
                 popoBtn.image = core.assets['img/popo2.png'];
                 tapObj = "popoBtn";
             });
 
-            pipiBtn.on('touchstart', function () {
+            pipiBtn.on(Event.TOUCH_START, function () {
                 pipiBtn.image = core.assets['img/pipi2.png'];
                 tapObj = "pipiBtn";
             });
 
-            deadlyBtn.on('touchstart', function () {
+            deadlyBtn.on(Event.TOUCH_START, function () {
                 if (!deadlyFlag) {
                     deadlyBtn.image = core.assets['img/deadly2.png'];
                     tapObj = "deadlyBtn";
@@ -422,26 +529,26 @@ window.onload = function ()
             });
 
             //タップした場所の座標取得
-            scene.on('touchstart', function (startPos) {
+            scene.on(Event.TOUCH_START, function (startPos) {
                 tapPos.x = startPos.x;
                 tapPos.y = startPos.y;
             });
 
             //離された時の処理
-            pupuBtn.on('touchend', function () {
+            pupuBtn.on(Event.TOUCH_END, function () {
                 pupuBtn.image = core.assets['img/pupu.png'];
             });
 
-            popoBtn.on('touchend', function () {
+            popoBtn.on(Event.TOUCH_END, function () {
                 popoBtn.image = core.assets['img/popo.png'];
             });
 
-            pipiBtn.on('touchend', function () {
+            pipiBtn.on(Event.TOUCH_END, function () {
                 console.log("call");
                 pipiBtn.image = core.assets['img/pipi.png'];
             });
 
-            deadlyBtn.on('touchend', function () {
+            deadlyBtn.on(Event.TOUCH_END, function () {
                 if (!deadlyFlag) {
                     //必殺コスト分の魂があるか確認。
                     if (SpiritCheck(Spirits, deadlyCost, spiritsLength)) {
@@ -462,7 +569,7 @@ window.onload = function ()
             });
 
             //タップした場所を使った処理はここから
-            scene.on('touchend', function (endPos) {
+            scene.on(Event.TOUCH_END, function (endPos) {
                 //ププボタンの場所で押してた場合
                 if (tapObj == "pupuBtn") {
                     if ((tapPos.y - endPos.y) > pupuBtn.height / 2 * pupuBtn.scaleY) {
@@ -576,7 +683,7 @@ window.onload = function ()
             scene.addChild(PIPI_UI);
 
             //矢印表示のためにここに処理
-            scene.on('touchmove', function (nowPos) {
+            scene.on(Event.TOUCH_MOVE, function (nowPos) {
                 //ププボタンの場所で押してた場合
                 if (tapObj == "pupuBtn") {
                     Arrow = ArrowSet(PUPU, pipiBtn, tapPos, nowPos, Arrow, core);
@@ -593,10 +700,11 @@ window.onload = function ()
                     scene.addChild(Arrow);
                 }
             });
-            scene.on('touchend', function () {
+            scene.on(Event.TOUCH_END, function () {
                 Arrow.x = 9000;
                 Arrow.y = -9000;
             });
+
             //魂の受け取り&描画処理
             socket.on("SpiritPushed", function (SpiritData) {
                 if (SpiritData.PlayerID == myPlayerID) {
@@ -616,15 +724,26 @@ window.onload = function ()
 
             //フォント
             scene.addChild(CPFont);
+
+            //所持コストのフォント
             for (var i = 0; i < costDigit; i++) {
                 scene.addChild(costFont[i]);
             }
 
+            //悪魔の必要コストフォント
             for (var i = 0; i < DemoncostDigit; i++)
             {
                 scene.addChild(PUPUcostFont[i]);
                 scene.addChild(POPOcostFont[i]);
                 scene.addChild(PIPIcostFont[i]);
+            }
+
+            //各悪魔のステータスバー
+            for (var i = 0; i < PUPUStatusBar.length; i++)
+            {
+                scene.addChild(PUPUStatusBar[i]);
+                scene.addChild(POPOStatusBar[i]);
+                scene.addChild(PIPIStatusBar[i]);
             }
             /////////////前面/////////////
 
