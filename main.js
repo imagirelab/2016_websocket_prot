@@ -174,7 +174,7 @@ window.onload = function ()
             scene.addEventListener(Event.TOUCH_START, function ()
             {
                 //現在表示しているシーンをゲームシーンに置き換えます
-                core.replaceScene(MatchingScene());              
+                core.replaceScene(MainScene());              
             });            
 
             ////////描画////////
