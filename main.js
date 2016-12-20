@@ -1,5 +1,5 @@
 var socket = io.connect('https://safe-reef-35714.herokuapp.com/');
-//var socket = io.connect('ws://192.168.11.250:3000');
+//var socket = io.connect('ws://192.168.11.250:5555');
 
 var myPlayerID = 0;
 
@@ -174,7 +174,7 @@ window.onload = function ()
             scene.addEventListener(Event.TOUCH_START, function ()
             {
                 //現在表示しているシーンをゲームシーンに置き換えます
-                core.replaceScene(MainScene());              
+                core.replaceScene(MatchingScene());              
             });            
 
             ////////描画////////
@@ -217,6 +217,11 @@ window.onload = function ()
                 else {
                     teamColor.image = core.assets['matchingUI/teamb.png'];
                 }
+            });
+
+            socket.on("MatchingEndRequest", function () {
+                //現在表示しているシーンをゲームシーンに置き換えます
+                core.replaceScene(MainScene());
             });
 
             scene.addChild(back);
@@ -665,6 +670,12 @@ window.onload = function ()
                 tapObj = null;
             });
 
+            socket.on("PushAddCost", function (CostData) {
+                var _PlyaerID = parseInt(CostData.PlayerID.toString());
+                if(_PlyaerID == myPlayerID)
+                    haveCost += CostData.Cost;
+            });
+
             ////////描画////////
             //オブジェクトに追加する処理(ここに入れたいオブジェクトを描画順に指定)
             /////////////背景/////////////
@@ -707,7 +718,9 @@ window.onload = function ()
 
             //魂の受け取り&描画処理
             socket.on("SpiritPushed", function (SpiritData) {
-                if (SpiritData.PlayerID == myPlayerID) {
+                var _PlayerID = parseInt(SpiritData.PlayerID.toString());
+
+                if (_PlayerID == myPlayerID) {
                     for (var i = 0; i < spiritsLength; i++) {
                         if (Spirits[i] == null) {
                             Spirits[i] = new Spirit(SpiritData.Type, SpiritData.PlayerID, core);
